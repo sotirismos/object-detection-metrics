@@ -1,5 +1,4 @@
 # A comparison of various object detection metrics via their precision - recall curves
----
 
 ## Usage:
 
@@ -15,42 +14,42 @@ python metrics.py --weight 0.5 --thres 0.7 --dirpath <path to a dir> --dpi 300  
 ```
  --dirpath 
 ```
-: Absolute or relative path to output directory
+Absolute or relative path to output directory
 
 ```
  --weight 
 ```
-: weighting factor for hybrid and fmeasure metrics
+weighting factor for hybrid and fmeasure metrics
 
 ```
  --thres
 ```
-: decision threshold, a sample with a metric above the threshold is classified as a TP.
+decision threshold, a sample with a metric above the threshold is classified as a TP.
 
 ```
  --size
 ```
-: output plot size in inches
+output plot size in inches
 
 ```
  --dpi
 ```
-: sets the dpi scale of the plot file
+sets the dpi scale of the plot file
 
 ```
  --plot
 ```
-: a switch option, show the plot in a window
+a switch option, show the plot in a window
 
 ```
  --pkl
 ```
-: a serialized list of dictionaries in pickle file format
+a serialized list of dictionaries in pickle file format
 
 ```
  --ratio
 ```
-: set the aspec ratio of the ouput image
+set the aspec ratio of the ouput image
   
 ---
 Each list element is a dictionary that contains information about
@@ -65,9 +64,10 @@ a summary of its key/value pairs is presented below:
 | matches  | a list of tupled index pairs |
 
 ---
-ImageAI returns the following dictionary for each detection in an image:
+[ImageAI](https://github.com/OlafenwaMoses/ImageAI) returns the following dictionary for each detection in an image:
 
-| Key        |Value| |
+
+| Key        |Value  |
 | -------    | ----- |
 | box_points | bbox corner coordinates in the image's coordinate space [top-left-x, top-left-y, right-bot-x, right-bot-y]|
 | name       | the name of the label associated with the detected object |
@@ -105,4 +105,4 @@ ImageAI returns the following dictionary for each detection in an image:
 ---
 ## Example plot
 
-![plot](https://bitbucket.org/datascouting/detection_metrics/raw/master/plots/pr_t50_w80.png)
+![plot](/home/sotiris/detection_metrics/plots/pr_t50_w80.png)
