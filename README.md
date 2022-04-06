@@ -105,4 +105,4 @@ a summary of its key/value pairs is presented below:
 ---
 ## Example plot
 
-![plot](/home/sotiris/detection_metrics/plots/pr_t50_w80.png)
+![plot](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots/pr_t50_w80.png)
