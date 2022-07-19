@@ -1,4 +1,4 @@
-import pickle
+import pickle5
 import enum
 import copy
 import os
@@ -714,7 +714,7 @@ if __name__ == '__main__':
     plot_flag = args.plot
     ratio = args.ratio
 
-    mdict_l = pickle.load(open(pickle_file, 'rb'))
+    mdict_l = pickle5.load(open(pickle_file, 'rb'))
     metrics = calculate_bbox_metrics(mdict_l, weight)
 
     # calculate precision - recall arrays
