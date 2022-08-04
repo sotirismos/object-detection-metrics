@@ -106,7 +106,7 @@ a summary of its key/value pairs is presented below:
 
 - [mdict_list.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list.pkl) is generated running [two_stage_lp.py](https://github.com/sotirismos/GRUBLES-Depersonalization-pipeline/blob/pytorch-mmdetection/two_stage_lp.py) from the depersonalization repository.
 
-- [mdict_list.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list_mmdetection.pkl) is generated running [two_stage_lp_mmdetection.py](https://github.com/sotirismos/GRUBLES-Depersonalization-pipeline/blob/pytorch-mmdetection/two_stage_lp_mmdetection.py) from the depersonalization repository.
+- [mdict_list_mmdetection.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list_mmdetection.pkl) is generated running [two_stage_lp_mmdetection.py](https://github.com/sotirismos/GRUBLES-Depersonalization-pipeline/blob/pytorch-mmdetection/two_stage_lp_mmdetection.py) from the depersonalization repository.
 
 
 ---
