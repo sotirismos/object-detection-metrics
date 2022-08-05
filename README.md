@@ -102,7 +102,7 @@ a summary of its key/value pairs is presented below:
 	```
 
 ---
-### Generation of .pkl prediction files
+### Generation of license plate .pkl prediction files
 
 - [mdict_list.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list.pkl) is generated running [two_stage_lp.py](https://github.com/sotirismos/GRUBLES-Depersonalization-pipeline/blob/pytorch-mmdetection/two_stage_lp.py) from the depersonalization repository.
 
@@ -110,7 +110,7 @@ a summary of its key/value pairs is presented below:
 
 
 ---
-### Plots
+### License plate evaluation plots
 
 ImageAI @ IOU_thres = 0.5            |  mmdetection @ IOU_thres = 0.5
 :-------------------------:|:-------------------------:
