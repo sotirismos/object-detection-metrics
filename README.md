@@ -1,12 +1,11 @@
-# A comparison of various object detection metrics via their precision - recall curves
+## Comparison of various object detection metrics via their precision - recall curves ##
 
-## Usage:
+### Usage:
 
-To generate a PR plot of all the metrics for a given threshold of 0.7, weighting factor 0.5,
-dpi scale 300, 12 inch output image size, run:
+To generate a PR plot of all the metrics for a given threshold of 0.75, dpi scale 200, 12 inch output image size, run:
 
 ```bash
-python metrics.py --weight 0.5 --thres 0.7 --dirpath <path to a dir> --dpi 300  --size 12
+python metrics.py --thres 0.75 --dirpath <path to a dir> --pkl <path to .pkl predictions> --dpi 200 --size 12
 ```
 
 *Arguments*
@@ -103,6 +102,38 @@ a summary of its key/value pairs is presented below:
 	```
 
 ---
-## Example plot
+### Generation of .pkl prediction files 
 
-![plot](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots/pr_t50_w80.png)
+- [mdict_list_traffic_light.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/mdict_list_traffic_light.pkl) is generated running [inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/inference.py).
+
+- [mdict_list_traffic_sign.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/mdict_list_traffic_sign.pkl) is generated running [inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/inference.py).
+
+- [mdict_list_vehicle.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/mdict_list_vehicle.pkl) is generated running [inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/inference.py).
+
+---
+[inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/inference.py) is the most important script of this branch and has the following functionalities.
+- Loading a pretrained model on BDD100K dataset, which consists of 10 classes.
+- Making predictions on images annotated on a subset of BDD100K classes on CVAT and exported as CVAT for images 1.1 (refer to GRUBLES-Annotation-pipeline).
+- Edit predictions and return the following dictionary for each detection in an image.
+
+| Key        |Value  |
+| -------    | ----- |
+| box_points | bbox corner coordinates in the image's coordinate space [top-left-x, top-left-y, right-bot-x, right-bot-y]|
+| name       | the name of the label associated with the detected object |
+| confidence | the detected object's confidence score |
+
+
+---
+### Plots
+
+Traffic Light @ IOU_thres = 0.5            |  Traffic Light @ IOU_thres = 0.7
+:-------------------------:|:-------------------------:
+![](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/plots_traffic_light/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/plots_traffic_light/pr_t70.png)
+
+Traffic Sign @ IOU_thres = 0.5            |  Traffic Sign @ IOU_thres = 0.7
+:-------------------------:|:-------------------------:
+![](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/plots_traffic_sign/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/plots_traffic_light/pr_t70.png)
+
+Vehicle @ IOU_thres = 0.5            |  Vehicle @ IOU_thres = 0.7
+:-------------------------:|:-------------------------:
+![](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/plots_vehicle/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/plots_vehicle/pr_t70.png)
