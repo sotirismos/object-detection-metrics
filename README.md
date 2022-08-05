@@ -102,7 +102,7 @@ a summary of its key/value pairs is presented below:
 	```
 
 ---
-### Generation of .pkl prediction files 
+### Generation of primary features .pkl prediction files 
 
 - [mdict_list_traffic_light.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/mdict_list_traffic_light.pkl) is generated running [inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/inference.py).
 
@@ -124,7 +124,7 @@ a summary of its key/value pairs is presented below:
 
 
 ---
-### Plots
+### Primary features evaluation plots
 
 Traffic Light @ IOU_thres = 0.5            |  Traffic Light @ IOU_thres = 0.7
 :-------------------------:|:-------------------------:
