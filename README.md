@@ -1,11 +1,12 @@
-## Comparison of various object detection metrics via their precision - recall curves ##
+# A comparison of various object detection metrics via their precision - recall curves
 
-### Usage:
+## Usage:
 
-To generate a PR plot of all the metrics for a given threshold of 0.75, dpi scale 200, 12 inch output image size, run:
+To generate a PR plot of all the metrics for a given threshold of 0.7, weighting factor 0.5,
+dpi scale 300, 12 inch output image size, run:
 
 ```bash
-python metrics.py --thres 0.75 --dirpath <path to a dir> --pkl <path to .pkl predictions> --dpi 200 --size 12
+python metrics.py --weight 0.5 --thres 0.7 --dirpath <path to a dir> --dpi 300  --size 12
 ```
 
 *Arguments*
@@ -102,24 +103,6 @@ a summary of its key/value pairs is presented below:
 	```
 
 ---
-### Generation of license plate .pkl prediction files
+## Example plot
 
-- [mdict_list.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list.pkl) is generated running [two_stage_lp.py](https://github.com/sotirismos/GRUBLES-Depersonalization-pipeline/blob/pytorch-mmdetection/two_stage_lp.py) from the depersonalization repository.
-
-- [mdict_list_mmdetection.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list_mmdetection.pkl) is generated running [two_stage_lp_mmdetection.py](https://github.com/sotirismos/GRUBLES-Depersonalization-pipeline/blob/pytorch-mmdetection/two_stage_lp_mmdetection.py) from the depersonalization repository.
-
-
----
-### License plate evaluation plots
-
-ImageAI @ IOU_thres = 0.5            |  mmdetection @ IOU_thres = 0.5
-:-------------------------:|:-------------------------:
-![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_license_plates/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_license_plates_mmdetection/pr_t50.png)
-
-ImageAI @ IOU_thres = 0.6            |  mmdetection @ IOU_thres = 0.6
-:-------------------------:|:-------------------------:
-![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_license_plates/pr_t60.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_license_plates_mmdetection/pr_t60.png)
-
-ImageAI @ IOU_thres = 0.7            |  mmdetection @ IOU_thres = 0.7
-:-------------------------:|:-------------------------:
-![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_license_plates/pr_t70.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_license_plates_mmdetection/pr_t70.png)
+![plot](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots/pr_t50_w80.png)

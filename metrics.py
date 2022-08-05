@@ -1,4 +1,4 @@
-import pickle5
+import pickle
 import enum
 import copy
 import os
@@ -48,6 +48,7 @@ def match_gen(iou, step, n):
 
             # gt bbox index of the pair with the largest IoU among all non-zero and non-masked pairs
             ind = iou_view.nonzero()[0][iou_view[iou_view>0].argmax()]
+	    #ind = np.where(iou_view == max(iou_view[iou_view>0]))[0][0]
 
             # mask the selected index
             iou_m.mask[ [step*i + ind for i in range(1,n)] ] = True
@@ -442,7 +443,7 @@ def calculate_bbox_metrics(mdict_l, weight=None):
         metrics["precision"] += [m for m in metrics_gen(mdict, calculate_precision) ]
         metrics["lpmetric1"] += [m for m in metrics_gen(mdict, calculate_lpmetric1) ]
         metrics["lpmetric2"] += [m for m in metrics_gen(mdict, calculate_lpmetric2) ]
-        metrics["confidence"] += [ det["percentage_probability"] for det in mdict["det"] if det]
+        metrics["confidence"] += [ det["confidence"] for det in mdict["det"] if det]
 
     if weight is not None:
         metrics["hybrid"] = list()
@@ -713,7 +714,7 @@ if __name__ == '__main__':
     plot_flag = args.plot
     ratio = args.ratio
 
-    mdict_l = pickle5.load(open(pickle_file, 'rb'))
+    mdict_l = pickle.load(open(pickle_file, 'rb'))
     metrics = calculate_bbox_metrics(mdict_l, weight)
 
     # calculate precision - recall arrays
@@ -762,23 +763,23 @@ if __name__ == '__main__':
             formula = "\n $%s= %.2f \cdot Recall + %.2f \cdot Iou $"\
                 % (metric.capitalize(), weight, 1-weight)
             ax.set_title("Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$" % 
-                         (r'LicensePlate', 100*ap_pareto[metric],
+                         (r'Vehicle', 100*ap_pareto[metric],
                           metric.capitalize(), thres) + formula)
         elif weight is not None and metric == 'fmeasure':
             formula ="\n$%s = \dfrac{%.2f\cdot Recall*Iou}{%.2f\cdot Iou+Recall}$"\
                 % (metric.capitalize(), weight**2 + 1, weight**2)
             ax.set_title("Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$"\
-                         % (r'LicensePlate', 100*ap_pareto[metric],
+                         % (r'Vehicle', 100*ap_pareto[metric],
                             metric.capitalize(), thres) + formula)
         elif weight is not None and metric == 'lpcomb':
             formula = "\n $%s = %.2f \cdot Lpmetric2+ %.2f \cdot Precision $"\
                 % (metric.capitalize(), weight, 1-weight)
             ax.set_title("Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$"\
-                         % (r'LicensePlate', 100*ap_pareto[metric],
+                         % (r'Vehicle', 100*ap_pareto[metric],
                           metric.capitalize(), thres) + formula)
         else:
             ax.set_title('Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$'\
-                         % (r'LicensePlate', 100*ap_pareto[metric],
+                         % (r'Vehicle', 100*ap_pareto[metric],
                             metric.capitalize(), thres))
         ax.grid()
 
