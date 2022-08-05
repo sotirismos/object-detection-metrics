@@ -763,23 +763,23 @@ if __name__ == '__main__':
             formula = "\n $%s= %.2f \cdot Recall + %.2f \cdot Iou $"\
                 % (metric.capitalize(), weight, 1-weight)
             ax.set_title("Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$" % 
-                         (r'LicensePlate', 100*ap_pareto[metric],
+                         (r'Vehicle', 100*ap_pareto[metric],
                           metric.capitalize(), thres) + formula)
         elif weight is not None and metric == 'fmeasure':
             formula ="\n$%s = \dfrac{%.2f\cdot Recall*Iou}{%.2f\cdot Iou+Recall}$"\
                 % (metric.capitalize(), weight**2 + 1, weight**2)
             ax.set_title("Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$"\
-                         % (r'LicensePlate', 100*ap_pareto[metric],
+                         % (r'Vehicle', 100*ap_pareto[metric],
                             metric.capitalize(), thres) + formula)
         elif weight is not None and metric == 'lpcomb':
             formula = "\n $%s = %.2f \cdot Lpmetric2+ %.2f \cdot Precision $"\
                 % (metric.capitalize(), weight, 1-weight)
             ax.set_title("Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$"\
-                         % (r'LicensePlate', 100*ap_pareto[metric],
+                         % (r'Vehicle', 100*ap_pareto[metric],
                           metric.capitalize(), thres) + formula)
         else:
             ax.set_title('Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$'\
-                         % (r'LicensePlate', 100*ap_pareto[metric],
+                         % (r'Vehicle', 100*ap_pareto[metric],
                             metric.capitalize(), thres))
         ax.grid()
 
