@@ -443,7 +443,7 @@ def calculate_bbox_metrics(mdict_l, weight=None):
         metrics["precision"] += [m for m in metrics_gen(mdict, calculate_precision) ]
         metrics["lpmetric1"] += [m for m in metrics_gen(mdict, calculate_lpmetric1) ]
         metrics["lpmetric2"] += [m for m in metrics_gen(mdict, calculate_lpmetric2) ]
-        metrics["confidence"] += [ det["percentage_probability"] for det in mdict["det"] if det]
+        metrics["confidence"] += [ det["confidence"] for det in mdict["det"] if det]
 
     if weight is not None:
         metrics["hybrid"] = list()
