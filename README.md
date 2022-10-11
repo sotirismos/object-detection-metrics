@@ -148,12 +148,12 @@ ImageAI @ IOU_thres = 0.7            |  mmdetection @ IOU_thres = 0.7
 
 Traffic Light @ IOU_thres = 0.5            |  Traffic Light @ IOU_thres = 0.7
 :-------------------------:|:-------------------------:
-![](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/plots_traffic_light/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/plots_traffic_light/pr_t70.png)
+![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_traffic_light/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_traffic_light/pr_t70.png)
 
 Traffic Sign @ IOU_thres = 0.5            |  Traffic Sign @ IOU_thres = 0.7
 :-------------------------:|:-------------------------:
-![](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/plots_traffic_sign/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/plots_traffic_light/pr_t70.png)
+![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_traffic_sign/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_traffic_light/pr_t70.png)
 
 Vehicle @ IOU_thres = 0.5            |  Vehicle @ IOU_thres = 0.7
 :-------------------------:|:-------------------------:
-![](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/plots_vehicle/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/plots_vehicle/pr_t70.png)
+![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_vehicle/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_vehicle/pr_t70.png)
