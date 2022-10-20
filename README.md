@@ -129,6 +129,9 @@ a summary of its key/value pairs is presented below:
 | confidence | the detected object's confidence score |
 
 ---
+### Metrics
+
+---
 ### License plates evaluation plots
 
 ImageAI @ IOU_thres = 0.5            |  mmdetection @ IOU_thres = 0.5
