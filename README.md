@@ -130,33 +130,42 @@ a summary of its key/value pairs is presented below:
 
 ---
 ### Metrics
+In order to evaluate the performance of the models for each class (license plates, traffic lights, traffic signs, vehicles) we calculated the mAP based on the
+precision-recall curves and exploting various metrics on different threshold values [0.5, 0.7]. To get the TP, FP, FN in order to construct the precision-recall curves, we utilized the following metrics.
+- IoU = intersection_area / union_area
+- "Precision" = intersection_area / detection_area
+- "Recall" = intersection_area / gt_area
+- "LP metric 1" = detection_area / union_area
+- "LP metric 2" = gt_area / union_area
+
+![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/metrics.jpg)
 
 ---
 ### License plates evaluation plots
 
-ImageAI @ IOU_thres = 0.5            |  mmdetection @ IOU_thres = 0.5
+ImageAI @ threshold = 0.5            |  mmdetection @ threshold = 0.5
 :-------------------------:|:-------------------------:
 ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_license_plates/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_license_plates_mmdetection/pr_t50.png)
 
-ImageAI @ IOU_thres = 0.6            |  mmdetection @ IOU_thres = 0.6
+ImageAI @ threshold = 0.6            |  mmdetection @ threshold = 0.6
 :-------------------------:|:-------------------------:
 ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_license_plates/pr_t60.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_license_plates_mmdetection/pr_t60.png)
 
-ImageAI @ IOU_thres = 0.7            |  mmdetection @ IOU_thres = 0.7
+ImageAI @ threshold = 0.7            |  mmdetection @ threshold = 0.7
 :-------------------------:|:-------------------------:
 ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_license_plates/pr_t70.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_license_plates_mmdetection/pr_t70.png)
 
 ---
 ### Primary features evaluation plots
 
-Traffic Light @ IOU_thres = 0.5            |  Traffic Light @ IOU_thres = 0.7
+Traffic Light @ threshold = 0.5            |  Traffic Light @ threshold = 0.7
 :-------------------------:|:-------------------------:
 ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_traffic_light/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_traffic_light/pr_t70.png)
 
-Traffic Sign @ IOU_thres = 0.5            |  Traffic Sign @ IOU_thres = 0.7
+Traffic Sign @ threshold = 0.5            |  Traffic Sign @ threshold = 0.7
 :-------------------------:|:-------------------------:
 ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_traffic_sign/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_traffic_light/pr_t70.png)
 
-Vehicle @ IOU_thres = 0.5            |  Vehicle @ IOU_thres = 0.7
+Vehicle @ threshold = 0.5            |  Vehicle @ threshold = 0.7
 :-------------------------:|:-------------------------:
 ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_vehicle/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_vehicle/pr_t70.png)
