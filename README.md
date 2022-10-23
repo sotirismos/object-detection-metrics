@@ -169,3 +169,6 @@ Traffic Sign @ threshold = 0.5            |  Traffic Sign @ threshold = 0.7
 Vehicle @ threshold = 0.5            |  Vehicle @ threshold = 0.7
 :-------------------------:|:-------------------------:
 ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_vehicle/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_vehicle/pr_t70.png)
+
+---
+### Conclusion
