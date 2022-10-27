@@ -8,6 +8,7 @@ import itertools as it
 from matplotlib import pyplot
 from matplotlib import gridspec
 
+
 class Errors(enum.Enum):
     """
     A enum class used as a flag of FN, FP
@@ -15,6 +16,7 @@ class Errors(enum.Enum):
     """
     FN = -1
     FP = -2
+
 
 def match_gen(iou, step, n):
     """
@@ -39,23 +41,24 @@ def match_gen(iou, step, n):
         (in their respective set).
 
     """
-    iou_m = np.ma.array(iou, mask=False) # a masked array view of the iou array
-    #iou_m = np.array(iou)
-    
+    iou_m = np.ma.array(iou, mask=False)  # a masked array view of the iou array
+    # iou_m = np.array(iou)
+
     for i in range(n):
-        try: # exception handling of an out of bounds index
-            iou_view = iou_m[step*i:step*(i+1)]# ith det bbox pairs in the cart prod set
+        try:  # exception handling of an out of bounds index
+            iou_view = iou_m[step * i:step * (i + 1)]  # ith det bbox pairs in the cart prod set
 
             # gt bbox index of the pair with the largest IoU among all non-zero and non-masked pairs
-            ind = iou_view.nonzero()[0][iou_view[iou_view>0].argmax()]
-	    #ind = np.where(iou_view == max(iou_view[iou_view>0]))[0][0]
+            ind = iou_view.nonzero()[0][iou_view[iou_view > 0].argmax()]
+            # ind = np.where(iou_view == max(iou_view[iou_view>0]))[0][0]
 
             # mask the selected index
-            iou_m.mask[ [step*i + ind for i in range(1,n)] ] = True
+            iou_m.mask[[step * i + ind for i in range(1, n)]] = True
 
-            yield (i, ind) # yield the pair (index of det bbox, index of gt bbox)
+            yield (i, ind)  # yield the pair (index of det bbox, index of gt bbox)
         except ValueError:
             pass
+
 
 def match(det_obj, tr_bboxes):
     """
@@ -80,14 +83,14 @@ def match(det_obj, tr_bboxes):
         A list of tuples representing the det and gt bbox index pairs.
 
     """
-    cart_prod = it.product(det_obj, tr_bboxes) # cartesian product of the two bbox sets
+    cart_prod = it.product(det_obj, tr_bboxes)  # cartesian product of the two bbox sets
 
     # IoU values of the bbox pairs using list comprehension
-    iou = [ calculate_iou(pair[1], pair[0]['box_points']) for pair in cart_prod ]
+    iou = [calculate_iou(pair[1], pair[0]['box_points']) for pair in cart_prod]
 
-    mpair_list = [ mpair for mpair in match_gen(iou, len(tr_bboxes), len(det_obj)) ]
+    mpair_list = [mpair for mpair in match_gen(iou, len(tr_bboxes), len(det_obj))]
 
-    diff = lambda a,b: np.uint(np.setdiff1d(np.union1d(a,b), np.intersect1d(a,b)))
+    diff = lambda a, b: np.uint(np.setdiff1d(np.union1d(a, b), np.intersect1d(a, b)))
 
     det_list = list()
     gt_list = list()
@@ -95,19 +98,20 @@ def match(det_obj, tr_bboxes):
     if det_obj:
         if mpair_list:
             matched_det = [mpair[0] for mpair in mpair_list if mpair]
-            det_list += [ (ind, None) for ind in diff( matched_det, range(len(det_obj)) ) ]
+            det_list += [(ind, None) for ind in diff(matched_det, range(len(det_obj)))]
         else:
-            det_list += [ (ind, None) for ind in range(len(det_obj)) ]
+            det_list += [(ind, None) for ind in range(len(det_obj))]
 
     if tr_bboxes:
         if mpair_list:
             matched_gt = [mpair[1] for mpair in mpair_list if mpair]
-            gt_list += [ (None, ind) for ind in diff( matched_gt, range(len(tr_bboxes)) ) ]
+            gt_list += [(None, ind) for ind in diff(matched_gt, range(len(tr_bboxes)))]
         else:
-            gt_list += [ (None, ind) for ind in range(len(tr_bboxes)) ]
+            gt_list += [(None, ind) for ind in range(len(tr_bboxes))]
 
     mpair_list += (det_list + gt_list)
     return mpair_list
+
 
 def calculate_areas(bbox_det, bbox_gt):
     """
@@ -131,16 +135,16 @@ def calculate_areas(bbox_det, bbox_gt):
     intersection_area: numpy scalar of type float
         Intersection area of the two bounding boxes.
     """
-    bbox_det = np.asarray(bbox_det) # ensure numpy array
-    bbox_gt = np.asarray(bbox_gt) # ensure numpy array
+    bbox_det = np.asarray(bbox_det)  # ensure numpy array
+    bbox_gt = np.asarray(bbox_gt)  # ensure numpy array
 
     assert len(bbox_det) == 4, "calculate_iou: Bbox_det length is %d" % len(bbox_det)
     assert len(bbox_gt) == 4, "calculate_iou: Bbox_gt length is %d" % len(bbox_gt)
 
-    tl1 = bbox_det[:2] # top-left corner x,y pair detection
-    tl2 = bbox_gt[:2] # top-left corner x,y pair of ground truth
-    br1 = bbox_det[2:] # bottom-right corner x,y pair of detection
-    br2 = bbox_gt[2:] # bottom-right corner x,y pair of ground truth
+    tl1 = bbox_det[:2]  # top-left corner x,y pair detection
+    tl2 = bbox_gt[:2]  # top-left corner x,y pair of ground truth
+    br1 = bbox_det[2:]  # bottom-right corner x,y pair of detection
+    br2 = bbox_gt[2:]  # bottom-right corner x,y pair of ground truth
 
     # width and height of the resulting box after the intersection
     intersection_wh = np.maximum(np.minimum(br1, br2) - np.maximum(tl1, tl2), 0)
@@ -152,6 +156,7 @@ def calculate_areas(bbox_det, bbox_gt):
     area_det, area_gt = np.prod(np.abs(br1 - tl1)), np.prod(np.abs(br2 - tl2))
 
     return area_det, area_gt, intersection_area
+
 
 def calculate_iou(bbox_det, bbox_gt):
     """
@@ -172,7 +177,7 @@ def calculate_iou(bbox_det, bbox_gt):
     iou : numpy scalar of type float
         The IoU value.
     """
-    
+
     # calculate detection bbox, ground truth and their intersection areas
     area_det, area_gt, intersection_area = calculate_areas(bbox_det, bbox_gt)
 
@@ -180,6 +185,7 @@ def calculate_iou(bbox_det, bbox_gt):
     union_area = area_det + area_gt - intersection_area
 
     return intersection_area / union_area
+
 
 def calculate_recall(bbox_det, bbox_gt):
     """
@@ -205,6 +211,7 @@ def calculate_recall(bbox_det, bbox_gt):
 
     return intersection_area / area_gt
 
+
 def calculate_precision(bbox_det, bbox_gt):
     """
     Calculate the precision metric given a detection and a ground truth bounding box.
@@ -228,6 +235,7 @@ def calculate_precision(bbox_det, bbox_gt):
     area_det, _, intersection_area = calculate_areas(bbox_det, bbox_gt)
 
     return intersection_area / area_det
+
 
 def calculate_lpmetric1(bbox_det, bbox_gt):
     """
@@ -255,6 +263,7 @@ def calculate_lpmetric1(bbox_det, bbox_gt):
 
     return area_det / union_area
 
+
 def calculate_lpmetric2(bbox_det, bbox_gt):
     """
     Calculate lpmetric given a detection and a ground truth bounding box.
@@ -280,6 +289,7 @@ def calculate_lpmetric2(bbox_det, bbox_gt):
     union_area = area_det + area_gt - intersection_area
 
     return area_gt / union_area
+
 
 def calculate_hybrid(bbox_det, bbox_gt, weight=0.5):
     """
@@ -311,6 +321,7 @@ def calculate_hybrid(bbox_det, bbox_gt, weight=0.5):
     iou = calculate_iou(bbox_det, bbox_gt)
 
     return weight * recall + (1 - weight) * iou
+
 
 def calculate_lp_comb(bbox_det, bbox_gt, weight=0.5):
     """
@@ -344,6 +355,7 @@ def calculate_lp_comb(bbox_det, bbox_gt, weight=0.5):
 
     return weight * lpmetric2 + (1 - weight) * precision
 
+
 def calculate_fmeasure(bbox_det, bbox_gt, weight=0.5):
     """
     F-measure based metric, the weighted harmonic mean of IoU
@@ -374,8 +386,9 @@ def calculate_fmeasure(bbox_det, bbox_gt, weight=0.5):
     recall = calculate_recall(bbox_det, bbox_gt)
     iou = calculate_iou(bbox_det, bbox_gt)
 
-    #return 1/(weight * 1/recall + (1 - weight) * 1/iou)
-    return (weight**2 + 1)/(weight * 1/recall + 1/iou)
+    # return 1/(weight * 1/recall + (1 - weight) * 1/iou)
+    return (weight ** 2 + 1) / (weight * 1 / recall + 1 / iou)
+
 
 def metrics_gen(mdict, func):
     """
@@ -408,8 +421,9 @@ def metrics_gen(mdict, func):
         elif mpair[1] == None:
             yield Errors.FP.value
         else:
-            yield func( mdict["det"][mpair[0]]["box_points"],
-                        mdict["gt"][mpair[1]]["bbox"] )
+            yield func(mdict["det"][mpair[0]]["box_points"],
+                       mdict["gt"][mpair[1]]["bbox"])
+
 
 def calculate_bbox_metrics(mdict_l, weight=None):
     """
@@ -435,35 +449,36 @@ def calculate_bbox_metrics(mdict_l, weight=None):
                "precision": list(),
                "lpmetric1": list(),
                "lpmetric2": list(),
-               "confidence": list() }
+               "confidence": list()}
 
     for mdict in mdict_l:
-        metrics["iou"] += [ m for m in metrics_gen(mdict, calculate_iou) ]
-        metrics["recall"] += [ m for m in metrics_gen(mdict, calculate_recall) ]
-        metrics["precision"] += [m for m in metrics_gen(mdict, calculate_precision) ]
-        metrics["lpmetric1"] += [m for m in metrics_gen(mdict, calculate_lpmetric1) ]
-        metrics["lpmetric2"] += [m for m in metrics_gen(mdict, calculate_lpmetric2) ]
-        metrics["confidence"] += [ det["confidence"] for det in mdict["det"] if det]
+        metrics["iou"] += [m for m in metrics_gen(mdict, calculate_iou)]
+        metrics["recall"] += [m for m in metrics_gen(mdict, calculate_recall)]
+        metrics["precision"] += [m for m in metrics_gen(mdict, calculate_precision)]
+        metrics["lpmetric1"] += [m for m in metrics_gen(mdict, calculate_lpmetric1)]
+        metrics["lpmetric2"] += [m for m in metrics_gen(mdict, calculate_lpmetric2)]
+        metrics["confidence"] += [det["percentage_probability"] for det in mdict["det"] if det]
 
     if weight is not None:
         metrics["hybrid"] = list()
         metrics["fmeasure"] = list()
         metrics["lpcomb"] = list()
 
-        lambda_hybrid =\
+        lambda_hybrid = \
             lambda bb_det, bb_gt: calculate_hybrid(bb_det, bb_gt, weight)
-        lambda_lp_comb =\
+        lambda_lp_comb = \
             lambda bb_det, bb_gt: calculate_lp_comb(bb_det, bb_gt, weight)
-        lambda_fmeasure =\
+        lambda_fmeasure = \
             lambda bb_det, bb_gt: calculate_fmeasure(bb_det, bb_gt, weight)
 
         for mdict in mdict_l:
-            metrics["hybrid"] += [ m for m in metrics_gen(mdict, lambda_hybrid) ]
-            metrics["lpcomb"] +=\
-                [ m for m in metrics_gen(mdict, lambda_lp_comb) ]
-            metrics["fmeasure"] +=\
-                [ m for m in metrics_gen(mdict, lambda_fmeasure) ]
+            metrics["hybrid"] += [m for m in metrics_gen(mdict, lambda_hybrid)]
+            metrics["lpcomb"] += \
+                [m for m in metrics_gen(mdict, lambda_lp_comb)]
+            metrics["fmeasure"] += \
+                [m for m in metrics_gen(mdict, lambda_fmeasure)]
     return metrics
+
 
 def calculate_pr(pr_metric, n_gt):
     """
@@ -484,8 +499,8 @@ def calculate_pr(pr_metric, n_gt):
     """
     tp, fp = (0, 0)
 
-    recall = np.empty( len(pr_metric), dtype='double')
-    precision = np.empty( len(pr_metric), dtype='double')
+    recall = np.empty(len(pr_metric), dtype='double')
+    precision = np.empty(len(pr_metric), dtype='double')
 
     for i in range(len(pr_metric)):
         tp += round(pr_metric[i])
@@ -493,6 +508,7 @@ def calculate_pr(pr_metric, n_gt):
         recall[i] = tp / n_gt
         precision[i] = tp / (tp + fp)
     return dict({"precision": precision, "recall": recall})
+
 
 def calculate_performance_metrics(metrics, thres=0):
     """
@@ -517,9 +533,10 @@ def calculate_performance_metrics(metrics, thres=0):
         "lpmetric"   {"precision": 1d np array, "recall": 1d np array}
         "hybrid"     {"precision": 1d np array, "recall": 1d np array}
     """
+
     def threshold_array(arr, thres=0):
-        arr = np.asarray(arr) # ensure numpy array
-        arr[arr>=thres], arr[arr<thres] = 1, 0
+        arr = np.asarray(arr)  # ensure numpy array
+        arr[arr >= thres], arr[arr < thres] = 1, 0
 
     pr_curves = dict()
     inds = np.argsort(metrics["confidence"])
@@ -528,16 +545,17 @@ def calculate_performance_metrics(metrics, thres=0):
         metric_arr = metrics[metric_key]
 
         tmp = np.asarray(metric_arr)
-        metric_arr_sorted = tmp[tmp!=Errors.FN.value][ inds[::-1] ] # remove FN
+        metric_arr_sorted = tmp[tmp != Errors.FN.value][inds[::-1]]  # remove FN
 
         # ground truth objects (total bboxes after FN removal - flase detection bboxes)
-        n_gt_bboxes =\
-            len(metric_arr) - len(metric_arr_sorted[metric_arr_sorted==Errors.FP.value])
+        n_gt_bboxes = \
+            len(metric_arr) - len(metric_arr_sorted[metric_arr_sorted == Errors.FP.value])
 
         threshold_array(metric_arr_sorted, thres)
         pr_curves[metric_key] = calculate_pr(metric_arr_sorted, n_gt_bboxes)
 
     return pr_curves
+
 
 def pareto_front_pr_curve(pr_curves):
     pr_curves_paretto = copy.deepcopy(pr_curves)
@@ -551,12 +569,12 @@ def pareto_front_pr_curve(pr_curves):
         curr_max_idx, area = (0, 0)
 
         while (curr_max_idx < len(precision_rev)):
-            next_max_idx =\
-                np.argmax(precision_rev[curr_max_idx: ] > curr_max) + curr_max_idx
+            next_max_idx = \
+                np.argmax(precision_rev[curr_max_idx:] > curr_max) + curr_max_idx
 
             next_max = precision_rev[next_max_idx]
 
-            precision_rev[curr_max_idx : next_max_idx] = curr_max
+            precision_rev[curr_max_idx: next_max_idx] = curr_max
 
             if curr_max_idx == next_max_idx:
                 break
@@ -569,6 +587,7 @@ def pareto_front_pr_curve(pr_curves):
 
         ap_scores[metric_key] = area
     return pr_curves_paretto, ap_scores
+
 
 def front_interp_pr_curve(pr_curves):
     """
@@ -603,22 +622,22 @@ def front_interp_pr_curve(pr_curves):
 
         # initialization
         curr_max = precision_rev[0]
-        curr_max_idx, area, dp, dr = 2*(0, 0)
+        curr_max_idx, area, dp, dr = 2 * (0, 0)
 
         while (curr_max_idx < len(precision_rev)):
-            next_max_idx =\
-                np.argmax(precision_rev[curr_max_idx: ] > curr_max) + curr_max_idx
+            next_max_idx = \
+                np.argmax(precision_rev[curr_max_idx:] > curr_max) + curr_max_idx
 
             # a sequence of equal recall values leads to a vertical line in the curve
             # find the index of the first recall value that is less than the repeating
-            vert_line_len = np.argmax(recall_rev[next_max_idx: ] < recall_rev[next_max_idx])
+            vert_line_len = np.argmax(recall_rev[next_max_idx:] < recall_rev[next_max_idx])
 
             # move to the repeating value's last index in the sequence
             # vert_line_len can be 0 if all the residual values are larger than the repeating
             # so take the maximum of the repeating value multiplicity and 0
             next_max_idx += max(vert_line_len - 1, 0)
 
-            next_max = precision_rev[next_max_idx] # next max precision value
+            next_max = precision_rev[next_max_idx]  # next max precision value
 
             # avoid  area and line points calculation in case of a vertical line
             if (recall_rev[next_max_idx] != recall_rev[curr_max_idx]):
@@ -634,15 +653,15 @@ def front_interp_pr_curve(pr_curves):
 
                 # slice the recall array and use it as the linear space of the
                 # interpolation (r_lin - r[initial])
-                recall_lin =\
-                    recall_rev[curr_max_idx : next_max_idx] - recall_rev[curr_max_idx]
+                recall_lin = \
+                    recall_rev[curr_max_idx: next_max_idx] - recall_rev[curr_max_idx]
 
                 # line interpolation
-                precision_rev[curr_max_idx : next_max_idx] =\
+                precision_rev[curr_max_idx: next_max_idx] = \
                     incl * recall_lin + curr_max
 
                 # area of the interval (triangle + rectangle)
-                area += (np.abs(dp)/2 + curr_max) * dr
+                area += (np.abs(dp) / 2 + curr_max) * dr
 
             # break when the curve maximum is reached
             # when there are no more max-valued indices displacement is 0
@@ -655,7 +674,7 @@ def front_interp_pr_curve(pr_curves):
         # area of the last segment
         dr = recall_rev[next_max_idx] - recall_rev[-1]
         dp = precision_rev[-1] - curr_max
-        area += (dp/2 + curr_max) * dr
+        area += (dp / 2 + curr_max) * dr
 
         # average precision score
         ap_scores[metric_key] = area
@@ -669,14 +688,14 @@ if __name__ == '__main__':
                         default=12,
                         help="the size (non-metric) of the output png file",
                         required=False)
-    parser.add_argument('--dpi','-d',
+    parser.add_argument('--dpi', '-d',
                         type=int,
                         default=200,
                         help="sets the dpi scale of the output png file",
                         required=False)
-    parser.add_argument('--thres','-t',
+    parser.add_argument('--thres', '-t',
                         type=float,
-                        default=0.75,
+                        default=0.7,
                         help="the threshold value",
                         required=False)
     parser.add_argument('--weight', '-w',
@@ -731,28 +750,28 @@ if __name__ == '__main__':
 
     # plot cell layout
     ncols = int(np.rint(np.sqrt(len(metric_keys))))
-    nrows = int(np.ceil(len(metric_keys)/ncols))
+    nrows = int(np.ceil(len(metric_keys) / ncols))
 
     # figure and grid initialization
-    fig = pyplot.figure(figsize = (ratio*size, size))
+    fig = pyplot.figure(figsize=(ratio * size, size))
     spec = gridspec.GridSpec(ncols=ncols, nrows=nrows, figure=fig)
 
     for metric in metric_keys:
-        i = metric_keys.index(metric)//ncols
+        i = metric_keys.index(metric) // ncols
         j = metric_keys.index(metric) - ncols * i
 
-        j = slice(j,None)\
-            if len(metric_keys) == metric_keys.index(metric)+1 else j
+        j = slice(j, None) \
+            if len(metric_keys) == metric_keys.index(metric) + 1 else j
         ax = fig.add_subplot(spec[i, j])
 
         ax.plot(pr_curves[metric]["recall"], pr_curves[metric]["precision"])
         ax.plot(pr_curves_pareto[metric]["recall"],
                 pr_curves_pareto[metric]["precision"],
-                label = '%s AP=%.2f %%' % ('Pareto front', 100*ap_pareto[metric]))
-        ax.plot(pr_curves_interp[metric]["recall"], 
+                label='%s AP=%.2f %%' % ('Pareto front', 100 * ap_pareto[metric]))
+        ax.plot(pr_curves_interp[metric]["recall"],
                 pr_curves_interp[metric]["precision"],
-                linestyle = '--',
-                label = '%s AP=%.2f %%' % ('Front interpolation', 100*ap_interp[metric]))
+                linestyle='--',
+                label='%s AP=%.2f %%' % ('Front interpolation', 100 * ap_interp[metric]))
 
         ax.set_xlim(0, pr_curves[metric]["recall"][-1] + 1e-2)
         ax.set_xlabel('Recall')
@@ -760,26 +779,26 @@ if __name__ == '__main__':
 
         ax.legend(shadow=False, loc='lower left')
         if weight is not None and metric == 'hybrid':
-            formula = "\n $%s= %.2f \cdot Recall + %.2f \cdot Iou $"\
-                % (metric.capitalize(), weight, 1-weight)
-            ax.set_title("Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$" % 
-                         (r'Vehicle', 100*ap_pareto[metric],
+            formula = "\n $%s= %.2f \cdot Recall + %.2f \cdot Iou $" \
+                      % (metric.capitalize(), weight, 1 - weight)
+            ax.set_title("Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$" %
+                         (r'Vehicle', 100 * ap_pareto[metric],
                           metric.capitalize(), thres) + formula)
         elif weight is not None and metric == 'fmeasure':
-            formula ="\n$%s = \dfrac{%.2f\cdot Recall*Iou}{%.2f\cdot Iou+Recall}$"\
-                % (metric.capitalize(), weight**2 + 1, weight**2)
-            ax.set_title("Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$"\
-                         % (r'Vehicle', 100*ap_pareto[metric],
+            formula = "\n$%s = \dfrac{%.2f\cdot Recall*Iou}{%.2f\cdot Iou+Recall}$" \
+                      % (metric.capitalize(), weight ** 2 + 1, weight ** 2)
+            ax.set_title("Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$" \
+                         % (r'Vehicle', 100 * ap_pareto[metric],
                             metric.capitalize(), thres) + formula)
         elif weight is not None and metric == 'lpcomb':
-            formula = "\n $%s = %.2f \cdot Lpmetric2+ %.2f \cdot Precision $"\
-                % (metric.capitalize(), weight, 1-weight)
-            ax.set_title("Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$"\
-                         % (r'Vehicle', 100*ap_pareto[metric],
-                          metric.capitalize(), thres) + formula)
+            formula = "\n $%s = %.2f \cdot Lpmetric2+ %.2f \cdot Precision $" \
+                      % (metric.capitalize(), weight, 1 - weight)
+            ax.set_title("Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$" \
+                         % (r'Vehicle', 100 * ap_pareto[metric],
+                            metric.capitalize(), thres) + formula)
         else:
-            ax.set_title('Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$'\
-                         % (r'Vehicle', 100*ap_pareto[metric],
+            ax.set_title('Precision x Recall curve \n%s, mAP=%.2f%%, $%s_{th}=%.2f$' \
+                         % (r'Vehicle', 100 * ap_pareto[metric],
                             metric.capitalize(), thres))
         ax.grid()
 
@@ -795,14 +814,14 @@ if __name__ == '__main__':
         print('Saving to default execution directory')
         dirpath = os.getcwd()
 
-    if not os.path.isdir( os.path.abspath(dirpath) ):
-        os.mkdir( os.path.normpath( os.path.abspath(dirpath) ) )
+    if not os.path.isdir(os.path.abspath(dirpath)):
+        os.mkdir(os.path.normpath(os.path.abspath(dirpath)))
 
     if weight is not None:
         fig.savefig(os.path.join(os.path.abspath(dirpath),
-                    'pr_t%d_w%d' % (thres*100, weight*100) +'.png'),
-                    dpi = dpi)
+                                 'pr_t%d_w%d' % (thres * 100, weight * 100) + '.png'),
+                    dpi=dpi)
     else:
         fig.savefig(os.path.join(os.path.abspath(dirpath),
-                    'pr_t%d' % (thres*100) +'.png'),
-                    dpi = dpi)
+                                 'pr_t%d' % (thres * 100) + '.png'),
+                    dpi=dpi)
