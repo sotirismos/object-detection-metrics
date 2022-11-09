@@ -141,6 +141,11 @@ precision-recall curves and exploting various metrics on different threshold val
 ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/metrics.jpg)
 
 ---
+### Evaluation datasets
+For the class of license plates, the evaluation dataset is a subset of the Stanford cars dataset and consists of 105 images of different types of vehicles (mainly cars) accompanied by 105 license plate annotation files. <br />
+For the classes of vehicles (cars, buses, trucks, motorcycles), traffic lights and traffic signs the dataset collected during the GRUBLES projects was utilized. More specifically, videos from the 6 different Insta360 Pro2 cameras were randomly selected. The frames from these videos were extracted and 500 random frames were selected, where each frame was annotated at a bounding box level, resulting to 1616 annotated vehicles, 125 annotated traffic lights and 371 annotated traffic signs.
+
+---
 ### License plates evaluation plots
 
 ImageAI @ threshold = 0.5            |  mmdetection @ threshold = 0.5
@@ -164,7 +169,7 @@ Traffic Light @ threshold = 0.5            |  Traffic Light @ threshold = 0.7
 
 Traffic Sign @ threshold = 0.5            |  Traffic Sign @ threshold = 0.7
 :-------------------------:|:-------------------------:
-![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_traffic_sign/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_traffic_light/pr_t70.png)
+![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_traffic_sign/pr_t50.png)  |  ![](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/plots_traffic_sign/pr_t70.png)
 
 Vehicle @ threshold = 0.5            |  Vehicle @ threshold = 0.7
 :-------------------------:|:-------------------------:
@@ -172,3 +177,7 @@ Vehicle @ threshold = 0.5            |  Vehicle @ threshold = 0.7
 
 ---
 ### Conclusion
+The two-stage license plate detection approach utilizing [mmdetection](https://github.com/sotirismos/mmdetection) provides much better perfomance that the [ImageAI](https://github.com/OlafenwaMoses/ImageAI) approach. <br />
+For the class of traffic lights, during the annotation process for a specific traffic light we outline 1 bounding box, while during the prediction process this can be "broken" into 2 or more, as shown in the figure below. Also, during prediction inverted traffic lights that have not been annotated are predicted as *True Positives*. Setting the threshold for IoU to 0.5, the mAP results to 40.69%. This is justified by the fact that there are many cases where we have 2 or more predictions and 1 annotation, where the predictions have a very small IoU and as a result are categorized as *False Positives*, and the prediction of inverted traffic lights as *True Positives*. Thus, the number of *False Positives* is enormous and the mAP is low. <br />
+For the vehicles the model works perfectly. Setting the threshold for IoU equal to 0.5 results to mAP = 62.28%, which is due to the fact that vehicles were not exhaustively annotated, resulting in a high number of *False Positives*. The ability of the model to locate almost every vehicle without fail is illustrated below and is verified by the fact that the Recall metric for this class is equal to 1. <br />
+For the class of traffic signs, the model works satisfactorily. Setting the threshold for the IoU equal to 0.5 results to mAP = 34.71%, where this particular low value is due to the fact that the model also detects the inverted signs that we did not annotate resulting in a high number of *False Positives*, as illustrated below.
