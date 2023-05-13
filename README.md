@@ -103,21 +103,21 @@ a summary of its key/value pairs is presented below:
 ---
 ### Generation of license plates .pkl prediction files 
 
-- [mdict_list.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list.pkl) is generated running [two_stage_lp.py](https://github.com/sotirismos/GRUBLES-Depersonalization-pipeline/blob/pytorch-mmdetection/two_stage_lp.py) from GRUBLES-Depersonalization-pipeline repository.
+- [mdict_list.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list.pkl) is generated running [two_stage_lp.py](https://github.com/sotirismos/Anonymization-Pipeline/blob/master/two_stage_lp.py) from GRUBLES-Depersonalization-pipeline repository.
 
-- [mdict_list_mmdetection.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list_mmdetection.pkl) is generated running [two_stage_lp_mmdetection.py](https://github.com/sotirismos/GRUBLES-Depersonalization-pipeline/blob/pytorch-mmdetection/two_stage_lp_mmdetection.py) from GRUBLES-Depersonalization-pipeline repository.
+- [mdict_list_mmdetection.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list_mmdetection.pkl) is generated running [two_stage_lp_mmdetection.py](https://github.com/sotirismos/Anonymization-Pipeline/blob/master/two_stage_lp_mmdetection.py) from GRUBLES-Depersonalization-pipeline repository.
 
 ---
 ### Generation of primary features .pkl prediction files 
 
-- [mdict_list_traffic_light.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/mdict_list_traffic_light.pkl) is generated running [inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/inference.py).
+- [mdict_list_traffic_light.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list_traffic_light.pkl) is generated running [inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/inference.py).
 
-- [mdict_list_traffic_sign.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/mdict_list_traffic_sign.pkl) is generated running [inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/inference.py).
+- [mdict_list_traffic_sign.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list_traffic_sign.pkl) is generated running [inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/inference.py).
 
-- [mdict_list_vehicle.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/mdict_list_vehicle.pkl) is generated running [inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/inference.py).
+- [mdict_list_vehicle.pkl](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/mdict_list_vehicle.pkl) is generated running [inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/inference.py).
 
 ---
-[inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/primary_features_detection_evaluation/inference.py) has the following functionalities.
+[inference.py](https://github.com/sotirismos/Object-Detection-Metrics/blob/master/inference.py) has the following functionalities.
 - Loading a pretrained model on BDD100K dataset, which consists of 10 classes.
 - Making predictions on images annotated on a subset of BDD100K classes on CVAT and exported as CVAT for images 1.1 (refer to GRUBLES-Annotation-pipeline).
 - Edit predictions and return the following dictionary for each detection in an image.
